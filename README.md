@@ -106,6 +106,7 @@ psproject update site-packages
 - [Setup Guide](https://py-swift.github.io/wiki/setup/)
 - [Kivy Project Documentation](https://py-swift.github.io/wiki/project/kivy/create/)
 - [PyProject Configuration](https://py-swift.github.io/wiki/project/kivy/pyproject-configuration/)
+- [Kivy on iOS Guide](https://kivyschool.com/kivy-on-ios/)
 
 ## License
 
