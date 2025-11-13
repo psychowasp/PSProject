@@ -53,9 +53,19 @@ code HelloWorld
 
 ### Configure for Kivy
 
-The generated `pyproject.toml` will contain default configuration. To create a Kivy-based app, ensure the following settings are configured:
+The generated `pyproject.toml` will contain default configuration. To create a Kivy-based app, add Kivy to the project dependencies and configure the PSProject backends:
 
 ```toml
+[project]
+name = "helloworld"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "kivy"
+]
+
 [tool.psproject]
 app_name = "HelloWorld"
 backends = [
