@@ -1,0 +1,59 @@
+//
+//  ProjectTarget+Plist.swift
+//  PSProject
+//
+//  Created by CodeBuilder on 13/11/2025.
+//
+
+let project_plist_keys = """
+UISupportedInterfaceOrientations:
+  - UIInterfaceOrientationLandscapeLeft
+  - UIInterfaceOrientationLandscapeRight
+  - UIInterfaceOrientationPortrait
+  - UIInterfaceOrientationPortraitUpsideDown
+
+UISupportedInterfaceOrientations-ipad:
+  - UIInterfaceOrientationLandscapeLeft
+  - UIInterfaceOrientationLandscapeRight
+  - UIInterfaceOrientationPortrait
+  - UIInterfaceOrientationPortraitUpsideDown
+
+UIStatusBarHidden: True
+
+UILaunchStoryboardName: Launch Screen
+
+UIApplicationSupportsIndirectInputEvents: Yes #?
+"""
+
+
+
+func stdlib_plist() -> String {
+"""
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleDevelopmentRegion</key>
+    <string>en</string>
+    <key>CFBundleExecutable</key>
+    <string></string>
+    <key>CFBundleIdentifier</key>
+    <string></string>
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleShortVersionString</key>
+    <string>1.0</string>
+    <key>CFBundleSupportedPlatforms</key>
+    <array>
+        <string>iPhoneOS</string>
+    </array>
+    <key>MinimumOSVersion</key>
+    <string>13.0</string>
+    <key>CFBundleVersion</key>
+    <string>1</string>
+</dict>
+</plist>
+"""
+}
