@@ -24,7 +24,7 @@ func getDependencies() -> [Package.Dependency] {[
     .package(url: "https://github.com/jpsim/Yams.git", .upToNextMajor(from: "5.0.6")),
     .package(url: "https://github.com/ITzTravelInTime/SwiftCPUDetect.git", from: "1.3.0"),
     .package(url: "https://github.com/apple/swift-algorithms", .upToNextMajor(from: "1.2.1")),
-    
+    .package(path: "./SetVersion"),
     // pyproject
     .package(url: "https://github.com/LebJe/TOMLKit", .upToNextMajor(from: "0.6.0")),
     .package(path: "./PyProjectToml"),

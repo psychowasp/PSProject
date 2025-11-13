@@ -18,6 +18,7 @@ struct PSProject: AsyncParsableCommand {
     static var configuration: CommandConfiguration {
         .init(
             commandName: "psproject",
+            version: LIBRARY_VERSION,
             subcommands: [
                 Create.self,
                 Init.self,
