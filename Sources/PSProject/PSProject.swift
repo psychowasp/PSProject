@@ -22,7 +22,8 @@ struct PSProject: AsyncParsableCommand {
             subcommands: [
                 Create.self,
                 Init.self,
-                Update.self
+                Update.self,
+                HostPython.self
             ]
         )
     }
