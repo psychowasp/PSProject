@@ -24,6 +24,21 @@
         "type": "string"
       }
     },
+    "exclude_dependencies": {
+      "type": "array",
+      "description": "List of dependencies to exclude",
+      "items": {
+        "type": "string"
+      }
+    },
+    "downloads": {
+      "type": "array",
+      "description": "URLs of files to download",
+      "items": {
+        "type": "string",
+        "format": "uri"
+      }
+    },
     "frameworks": {
       "type": "array",
       "description": "List of framework paths (can use ${PS_SUPPORT} variable)",
@@ -56,7 +71,7 @@
           },
           "platformFilter": {
             "type": "string",
-            "enum": ["iOS", "macOS", "tvOS", "watchOS"],
+            "enum": ["iOS", "macOS", "tvOS", "watchOS", "visionOS"],
             "description": "Platform filter for the dependency"
           }
         }
@@ -75,9 +90,48 @@
               "format": "uri",
               "description": "Git URL of the package"
             },
+            "path": {
+              "type": "string",
+              "description": "Local path to the package"
+            },
+            "revision": {
+              "type": "string",
+              "description": "Git commit hash"
+            },
+            "branch": {
+              "type": "string",
+              "description": "Git branch name"
+            },
+            "exactVersion": {
+              "type": "string",
+              "description": "Exact semantic version"
+            },
+            "versionRange": {
+              "type": "object",
+              "description": "Version range specification",
+              "required": ["minimumVersion", "maximumVersion"],
+              "properties": {
+                "minimumVersion": {
+                  "type": "string",
+                  "description": "Minimum version"
+                },
+                "maximumVersion": {
+                  "type": "string",
+                  "description": "Maximum version"
+                }
+              }
+            },
+            "upToNextMinorVersion": {
+              "type": "string",
+              "description": "Up to next minor version from specified version"
+            },
+            "upToNextMajorVersion": {
+              "type": "string",
+              "description": "Up to next major version from specified version"
+            },
             "versionRequirement": {
               "type": "object",
-              "description": "Version requirement specification",
+              "description": "Version requirement specification (legacy)",
               "oneOf": [
                 {
                   "required": ["branch"],
@@ -138,70 +192,155 @@
       }
     },
     "install": {
-      "type": "object",
-      "description": "Installation script configuration",
-      "required": ["type"],
-      "properties": {
-        "type": {
-          "type": "string",
-          "enum": ["shell"],
-          "description": "Type of installation script"
-        },
-        "shell": {
-          "type": "string",
-          "enum": ["python", "bash", "zsh", "sh"],
-          "description": "Shell/interpreter to use"
-        },
-        "file": {
-          "type": "string",
-          "description": "Path to the installation script file"
-        },
-        "run": {
-          "type": "string",
-          "description": "Inline script text to execute"
-        }
-      },
       "oneOf": [
         {
-          "required": ["file"]
+          "type": "object",
+          "description": "Single installation script configuration",
+          "required": ["type"],
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["shell"],
+              "description": "Type of installation script"
+            },
+            "shell": {
+              "type": "string",
+              "enum": ["python", "bash", "zsh", "sh", "ruby", "fish"],
+              "description": "Shell/interpreter to use"
+            },
+            "file": {
+              "type": "string",
+              "description": "Path to the installation script file"
+            },
+            "run": {
+              "type": "string",
+              "description": "Inline script text to execute"
+            }
+          },
+          "oneOf": [
+            {
+              "required": ["file"]
+            },
+            {
+              "required": ["run"]
+            }
+          ]
         },
         {
-          "required": ["run"]
+          "type": "array",
+          "description": "Multiple installation scripts",
+          "items": {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["shell"],
+                "description": "Type of installation script"
+              },
+              "shell": {
+                "type": "string",
+                "enum": ["python", "bash", "zsh", "sh", "ruby", "fish"],
+                "description": "Shell/interpreter to use"
+              },
+              "file": {
+                "type": "string",
+                "description": "Path to the installation script file"
+              },
+              "run": {
+                "type": "string",
+                "description": "Inline script text to execute"
+              }
+            },
+            "oneOf": [
+              {
+                "required": ["file"]
+              },
+              {
+                "required": ["run"]
+              }
+            ]
+          }
         }
       ]
     },
     "copy_to_site_packages": {
-      "type": "object",
-      "description": "Script to copy files to site-packages",
-      "required": ["type"],
-      "properties": {
-        "type": {
-          "type": "string",
-          "enum": ["shell"],
-          "description": "Type of script"
-        },
-        "shell": {
-          "type": "string",
-          "enum": ["python", "bash", "zsh", "sh"],
-          "description": "Shell/interpreter to use"
-        },
-        "file": {
-          "type": "string",
-          "description": "Path to the script file"
-        },
-        "run": {
-          "type": "string",
-          "description": "Inline script text to execute"
-        }
-      },
       "oneOf": [
         {
-          "required": ["file"]
+          "type": "object",
+          "description": "Single copy script configuration",
+          "required": ["type"],
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["shell"],
+              "description": "Type of script"
+            },
+            "shell": {
+              "type": "string",
+              "enum": ["python", "bash", "zsh", "sh", "ruby", "fish"],
+              "description": "Shell/interpreter to use"
+            },
+            "file": {
+              "type": "string",
+              "description": "Path to the script file"
+            },
+            "run": {
+              "type": "string",
+              "description": "Inline script text to execute"
+            }
+          },
+          "oneOf": [
+            {
+              "required": ["file"]
+            },
+            {
+              "required": ["run"]
+            }
+          ]
         },
         {
-          "required": ["run"]
+          "type": "array",
+          "description": "Multiple copy scripts",
+          "items": {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["shell"],
+                "description": "Type of script"
+              },
+              "shell": {
+                "type": "string",
+                "enum": ["python", "bash", "zsh", "sh", "ruby", "fish"],
+                "description": "Shell/interpreter to use"
+              },
+              "file": {
+                "type": "string",
+                "description": "Path to the script file"
+              },
+              "run": {
+                "type": "string",
+                "description": "Inline script text to execute"
+              }
+            },
+            "oneOf": [
+              {
+                "required": ["file"]
+              },
+              {
+                "required": ["run"]
+              }
+            ]
+          }
         }
       ]
+    },
+    "plist_entries": {
+      "type": "object",
+      "description": "Custom Info.plist entries",
+      "additionalProperties": true
     },
     "will_modify_main_swift": {
       "type": "object",
@@ -213,35 +352,75 @@
       }
     },
     "modify_main_swift": {
-      "type": "object",
-      "description": "Script to modify main.swift",
-      "required": ["type"],
-      "properties": {
-        "type": {
-          "type": "string",
-          "enum": ["shell"],
-          "description": "Type of script"
-        },
-        "shell": {
-          "type": "string",
-          "enum": ["python", "bash", "zsh", "sh"],
-          "description": "Shell/interpreter to use"
-        },
-        "file": {
-          "type": "string",
-          "description": "Path to the script file"
-        },
-        "run": {
-          "type": "string",
-          "description": "Inline script text to execute"
-        }
-      },
       "oneOf": [
         {
-          "required": ["file"]
+          "type": "object",
+          "description": "Single main.swift modification script",
+          "required": ["type"],
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["shell"],
+              "description": "Type of script"
+            },
+            "shell": {
+              "type": "string",
+              "enum": ["python", "bash", "zsh", "sh", "ruby", "fish"],
+              "description": "Shell/interpreter to use"
+            },
+            "file": {
+              "type": "string",
+              "description": "Path to the script file"
+            },
+            "run": {
+              "type": "string",
+              "description": "Inline script text to execute"
+            }
+          },
+          "oneOf": [
+            {
+              "required": ["file"]
+            },
+            {
+              "required": ["run"]
+            }
+          ]
         },
         {
-          "required": ["run"]
+          "type": "array",
+          "description": "Multiple main.swift modification scripts",
+          "items": {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["shell"],
+                "description": "Type of script"
+              },
+              "shell": {
+                "type": "string",
+                "enum": ["python", "bash", "zsh", "sh", "ruby", "fish"],
+                "description": "Shell/interpreter to use"
+              },
+              "file": {
+                "type": "string",
+                "description": "Path to the script file"
+              },
+              "run": {
+                "type": "string",
+                "description": "Inline script text to execute"
+              }
+            },
+            "oneOf": [
+              {
+                "required": ["file"]
+              },
+              {
+                "required": ["run"]
+              }
+            ]
+          }
         }
       ]
     }
