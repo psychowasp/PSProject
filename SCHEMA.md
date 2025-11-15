@@ -17,7 +17,6 @@ The schema is automatically applied to all `backend.yml` and `backend.yaml` file
 
 ### Core Properties
 - **name** (required): Backend name
-- **dependencies**: List of backend dependencies
 - **backend_dependencies**: List of backend dependencies
 - **exclude_dependencies**: List of dependencies to exclude
 
@@ -51,13 +50,13 @@ The schema is automatically applied to all `backend.yml` and `backend.yaml` file
   - `modules`: Python modules to import
 
 ### Scripts
-Scripts can be single objects or arrays of objects:
+All script fields are arrays of script objects:
 
 - **install**: Installation scripts
 - **copy_to_site_packages**: Site-packages copy scripts
 - **modify_main_swift**: Main.swift modification scripts
 
-Each script supports:
+Each script object supports:
 - `type`: "shell"
 - `shell`: python, bash, zsh, sh, ruby, fish
 - `file`: Path to script file OR
@@ -140,9 +139,9 @@ install:
       echo "Installing..."
 
 copy_to_site_packages:
-  type: shell
-  shell: python
-  file: site_packages_install.py
+  - type: shell
+    shell: python
+    file: site_packages_install.py
 
 plist_entries:
   CFBundleURLTypes:
@@ -157,7 +156,7 @@ will_modify_main_swift:
   iOS: true
 
 modify_main_swift:
-  type: shell
-  shell: python
-  file: main_swift.py
+  - type: shell
+    shell: python
+    file: main_swift.py
 ```

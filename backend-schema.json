@@ -10,13 +10,6 @@
       "type": "string",
       "description": "Name of the backend"
     },
-    "dependencies": {
-      "type": "array",
-      "description": "List of other backend dependencies",
-      "items": {
-        "type": "string"
-      }
-    },
     "backend_dependencies": {
       "type": "array",
       "description": "List of backend dependencies",
