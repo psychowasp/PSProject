@@ -363,77 +363,40 @@
       }
     },
     "modify_main_swift": {
-      "oneOf": [
-        {
-          "type": "object",
-          "description": "Single main.swift modification script",
-          "required": ["type"],
-          "properties": {
-            "type": {
-              "type": "string",
-              "enum": ["shell"],
-              "description": "Type of script"
-            },
-            "shell": {
-              "type": "string",
-              "enum": ["python", "bash", "zsh", "sh", "ruby", "fish"],
-              "description": "Shell/interpreter to use"
-            },
-            "file": {
-              "type": "string",
-              "description": "Path to the script file"
-            },
-            "run": {
-              "type": "string",
-              "description": "Inline script text to execute"
-            }
+      "type": "array",
+      "description": "Main.swift modification scripts",
+      "items": {
+        "type": "object",
+        "required": ["type"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["shell"],
+            "description": "Type of script"
           },
-          "oneOf": [
-            {
-              "required": ["file"]
-            },
-            {
-              "required": ["run"]
-            }
-          ]
-        },
-        {
-          "type": "array",
-          "description": "Multiple main.swift modification scripts",
-          "items": {
-            "type": "object",
-            "required": ["type"],
-            "properties": {
-              "type": {
-                "type": "string",
-                "enum": ["shell"],
-                "description": "Type of script"
-              },
-              "shell": {
-                "type": "string",
-                "enum": ["python", "bash", "zsh", "sh", "ruby", "fish"],
-                "description": "Shell/interpreter to use"
-              },
-              "file": {
-                "type": "string",
-                "description": "Path to the script file"
-              },
-              "run": {
-                "type": "string",
-                "description": "Inline script text to execute"
-              }
-            },
-            "oneOf": [
-              {
-                "required": ["file"]
-              },
-              {
-                "required": ["run"]
-              }
-            ]
+          "shell": {
+            "type": "string",
+            "enum": ["python", "bash", "zsh", "sh", "ruby", "fish"],
+            "description": "Shell/interpreter to use"
+          },
+          "file": {
+            "type": "string",
+            "description": "Path to the script file"
+          },
+          "run": {
+            "type": "string",
+            "description": "Inline script text to execute"
           }
-        }
-      ]
+        },
+        "oneOf": [
+          {
+            "required": ["file"]
+          },
+          {
+            "required": ["run"]
+          }
+        ]
+      }
     }
   }
 }
