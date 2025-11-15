@@ -19,7 +19,7 @@
     },
     "exclude_dependencies": {
       "type": "array",
-      "description": "List of dependencies to exclude",
+      "description": "List of pip packages to exclude when updating site-packages",
       "items": {
         "type": "string"
       }

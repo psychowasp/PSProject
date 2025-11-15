@@ -18,7 +18,7 @@ The schema is automatically applied to all `backend.yml` and `backend.yaml` file
 ### Core Properties
 - **name** (required): Backend name
 - **backend_dependencies**: List of backend dependencies
-- **exclude_dependencies**: List of dependencies to exclude
+- **exclude_dependencies**: List of pip packages to exclude when updating site-packages
 
 ### Resources
 - **downloads**: URLs of files to download
