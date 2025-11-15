@@ -203,77 +203,40 @@
       }
     },
     "install": {
-      "oneOf": [
-        {
-          "type": "object",
-          "description": "Single installation script configuration",
-          "required": ["type"],
-          "properties": {
-            "type": {
-              "type": "string",
-              "enum": ["shell"],
-              "description": "Type of installation script"
-            },
-            "shell": {
-              "type": "string",
-              "enum": ["python", "bash", "zsh", "sh", "ruby", "fish"],
-              "description": "Shell/interpreter to use"
-            },
-            "file": {
-              "type": "string",
-              "description": "Path to the installation script file"
-            },
-            "run": {
-              "type": "string",
-              "description": "Inline script text to execute"
-            }
+      "type": "array",
+      "description": "Installation scripts",
+      "items": {
+        "type": "object",
+        "required": ["type"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["shell"],
+            "description": "Type of installation script"
           },
-          "oneOf": [
-            {
-              "required": ["file"]
-            },
-            {
-              "required": ["run"]
-            }
-          ]
-        },
-        {
-          "type": "array",
-          "description": "Multiple installation scripts",
-          "items": {
-            "type": "object",
-            "required": ["type"],
-            "properties": {
-              "type": {
-                "type": "string",
-                "enum": ["shell"],
-                "description": "Type of installation script"
-              },
-              "shell": {
-                "type": "string",
-                "enum": ["python", "bash", "zsh", "sh", "ruby", "fish"],
-                "description": "Shell/interpreter to use"
-              },
-              "file": {
-                "type": "string",
-                "description": "Path to the installation script file"
-              },
-              "run": {
-                "type": "string",
-                "description": "Inline script text to execute"
-              }
-            },
-            "oneOf": [
-              {
-                "required": ["file"]
-              },
-              {
-                "required": ["run"]
-              }
-            ]
+          "shell": {
+            "type": "string",
+            "enum": ["python", "bash", "zsh", "sh", "ruby", "fish"],
+            "description": "Shell/interpreter to use"
+          },
+          "file": {
+            "type": "string",
+            "description": "Path to the installation script file"
+          },
+          "run": {
+            "type": "string",
+            "description": "Inline script text to execute"
           }
-        }
-      ]
+        },
+        "oneOf": [
+          {
+            "required": ["file"]
+          },
+          {
+            "required": ["run"]
+          }
+        ]
+      }
     },
     "copy_to_site_packages": {
       "oneOf": [
