@@ -3,7 +3,7 @@
 import PSTools
 
 
-public struct WrapperImporter {
+public struct WrapperImporter: Decodable {
     
     public let libraries: [Library]
     public let modules: [WrapperImport]
@@ -13,8 +13,19 @@ public struct WrapperImporter {
         self.modules = modules
     }
     
+    enum CodingKeys: CodingKey {
+        case libraries
+        case modules
+    }
     
-    public struct Library: CustomStringConvertible {
+    public init(from decoder: any Decoder) throws {
+        let container = try! decoder.container(keyedBy: CodingKeys.self)
+        self.libraries = try! container.decode([WrapperImporter.Library].self, forKey: .libraries)
+        self.modules = try! container.decode([WrapperImporter.WrapperImport].self, forKey: .modules)
+    }
+   
+    
+    public struct Library: CustomStringConvertible, Decodable {
         
         public let name: String
         
@@ -26,14 +37,38 @@ public struct WrapperImporter {
             name
         }
         
+        public init(from decoder: any Decoder) throws {
+            let c = try decoder.singleValueContainer()
+            name = try c.decode(String.self)
+        }
     }
     
-    public enum WrapperImport: CustomStringConvertible {
+    public enum WrapperImport: CustomStringConvertible, Decodable {
         
         case static_import(String)
         case name_import(name: String, module: String)
         
+        enum NameImportCodingKeys: CodingKey {
+            case name
+            case module
+        }
         
+        public init(from decoder: any Decoder) throws {
+            if let c = try? decoder.singleValueContainer() {
+                let string = try! c.decode(String.self)
+                if string.hasPrefix(".") {
+                    self = .static_import(string)
+                } else {
+                    fatalError("raw strings should contain prefix . and refer to static extension")
+                }
+            } else {
+                let c = try! decoder.container(keyedBy: NameImportCodingKeys.self)
+                self = .name_import(
+                    name: try c.decode(String.self, forKey: .name),
+                    module: try c.decode(String.self, forKey: .module)
+                )
+            }
+        }
         
         
         public var description: String {
