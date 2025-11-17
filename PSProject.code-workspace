@@ -1,0 +1,32 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {},
+	"launch": {
+		"configurations": [
+			{
+				"type": "swift",
+				"request": "launch",
+				"args": [],
+				"cwd": "${workspaceFolder:PSProject}",
+				"name": "Debug PSProject (PSProject)",
+				"target": "PSProject",
+				"configuration": "debug",
+				"preLaunchTask": "swift: Build Debug PSProject (PSProject)"
+			},
+			{
+				"type": "swift",
+				"request": "launch",
+				"args": [],
+				"cwd": "${workspaceFolder:PSProject}",
+				"name": "Release PSProject (PSProject)",
+				"target": "PSProject",
+				"configuration": "release",
+				"preLaunchTask": "swift: Build Release PSProject (PSProject)"
+			}
+		]
+	}
+}

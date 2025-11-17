@@ -80,19 +80,37 @@ install:
 
   - type: shell
     shell: python
-    run: ""
+    run: |
+      print('Running install script in Python')
+      for i in range(5):
+          print(f'\tCount: {i}')
+
   - type: shell
     shell: bash
-    run: ""
+    run: |
+      echo 'Running install script in Bash'
+      for i in {1..5}; do
+          echo -e "\tCount: $i"
+      done
+
   - type: shell
     shell: zsh
-    run: ""
+    run: |
+      echo 'Running install script in Zsh'
+      for i in {1..5}; do
+          echo -e "\tCount: $i"
+      done
+
   - type: shell
     shell: ruby
-    run: ""
+    run: |
+      puts 'Running install script in Ruby'
+      5.times do |i|
+        puts "\tCount: #{i}"
+      end
   - type: shell
     shell: fish
-    run: ""
+    run: echo 'Running install script in Fish'
     
 copy_to_site_packages:
   - type: shell
@@ -113,19 +131,38 @@ copy_to_site_packages:
 
   - type: shell
     shell: python
-    run: ""
+    run: |
+      print('Copying to site-packages in Python')
+      for package in ['package1', 'package2', 'package3']:
+          print(f'\tCopying {package} to site-packages')
   - type: shell
     shell: bash
-    run: ""
+    run: |
+      echo 'Copying to site-packages in Bash'
+      for package in package1 package2 package3; do
+          echo -e "\tCopying $package to site-packages"
+      done
   - type: shell
     shell: zsh
-    run: ""
+    run: |
+      echo 'Copying to site-packages in Zsh'
+      for package in package1 package2 package3; do
+          echo -e "\tCopying $package to site-packages"
+      done
   - type: shell
     shell: ruby
-    run: ""
+    run: |
+      puts 'Copying to site-packages in Ruby'
+      ['package1', 'package2', 'package3'].each do |package|
+        puts "\tCopying #{package} to site-packages"
+      end
   - type: shell
     shell: fish
-    run: ""
+    run: |
+      echo 'Copying to site-packages in Fish'
+      for package in package1 package2 package3
+          echo -e "\tCopying $package to site-packages"
+      end
 
 plist_entries:
   CFBundleURLTypes:

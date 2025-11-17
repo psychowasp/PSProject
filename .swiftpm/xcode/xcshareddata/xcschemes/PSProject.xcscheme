@@ -36,7 +36,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "YES"
-      customWorkingDirectory = "/Volumes/CodeSSD/psproject_showcases/AppWorks"
+      customWorkingDirectory = "/Volumes/CodeSSD/psproject_showcases/KivyMDApp"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
@@ -58,6 +58,22 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "update site-packages"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "test backend"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "/Volumes/CodeSSD/kivyschool_github/pyswift-backends/src/kivyschool/sdl3"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "/Volumes/CodeSSD/kivyschool_github/pyswift-backends/src/kivyschool/kivy3launcher"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "/Volumes/CodeSSD/GitHub/PSProject/backend_template.yml"
             isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>
