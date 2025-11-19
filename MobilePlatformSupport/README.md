@@ -221,8 +221,10 @@ swift run mobile-wheels-checker --help
 
 ### Data Sources
 
-- **Default**: Top packages from [hugovk.github.io/top-pypi-packages](https://hugovk.github.io/top-pypi-packages/) (ranked by popularity)
-- **--all flag**: All packages from [pypi.org/simple](https://pypi.org/simple/) (alphabetical order, ~700k packages)
+- **Default**: Top packages from [hugovk.github.io/top-pypi-packages](https://hugovk.github.io/top-pypi-packages/) (pre-ranked, ~8k packages)
+- **--all flag**: All packages from [pypi.org/simple](https://pypi.org/simple/) (~700k packages, sorted by download count)
+
+The `--all` flag fetches the complete package list from PyPI's Simple Index, then sorts it by download statistics to prioritize the most popular packages. This gives you access to the full PyPI ecosystem while still checking important packages first.
 
 ### Output
 
@@ -237,22 +239,37 @@ The tool generates:
 
 ### PyPI Simple Index Scraping
 
-The `--all` flag scrapes PyPI's Simple Index to get all available packages:
+The `--all` flag scrapes PyPI's Simple Index to get all available packages, then sorts by download count:
 
 ```swift
-static func downloadAllPackagesFromSimpleIndex() async throws -> [String] {
+static func downloadAllPackagesFromSimpleIndex(sortedByDownloads: Bool = false) async throws -> [String] {
+    // 1. Download and parse Simple Index HTML
     let url = URL(string: "https://pypi.org/simple/")!
     let (data, _) = try await URLSession.shared.data(from: url)
     
     // Parse HTML: <a href="/simple/package-name/">package-name</a>
     let pattern = #"<a href="/simple/[^/]+/">([^<]+)</a>"#
-    // ... regex matching
+    // ... regex matching to extract ~700k packages
     
-    return packages  // ~700k packages
+    // 2. If sorting requested, fetch download statistics
+    if sortedByDownloads {
+        let statsUrl = URL(string: "https://hugovk.github.io/top-pypi-packages/...")!
+        let response = try await URLSession.shared.data(from: statsUrl)
+        
+        // Create ranking map and sort packages
+        // Ranked packages first (by download count), then unranked alphabetically
+    }
+    
+    return packages
 }
 ```
 
-This provides an alternative to the popularity-based ranking, useful for comprehensive package ecosystem analysis.
+This provides:
+- **Complete coverage**: Access to all ~700k PyPI packages
+- **Smart ordering**: Popular packages checked first (ranked by downloads)
+- **Fallback**: Unranked packages appear alphabetically after ranked ones
+
+The sorting ensures that even when checking the full PyPI catalog, you get meaningful results quickly by processing the most important packages first.
 
 ## License
 

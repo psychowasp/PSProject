@@ -14,7 +14,7 @@ func printUsage() {
     
     OPTIONS:
         -d, --deps      Enable dependency checking (recursive)
-        -a, --all       Use PyPI Simple Index (all packages) instead of top packages
+        -a, --all       Use PyPI Simple Index (all ~700k packages, sorted by downloads)
         -h, --help      Show this help message
     
     EXAMPLES:
@@ -24,15 +24,16 @@ func printUsage() {
         # Check top 500 packages with dependency checking
         mobile-wheels-checker 500 --deps
         
-        # Check first 1000 packages from PyPI Simple Index
+        # Check first 1000 packages (sorted by downloads from full PyPI catalog)
         mobile-wheels-checker 1000 --all
         
         # Check all packages on PyPI (~700k packages - will take hours!)
         mobile-wheels-checker 999999 --all
     
     DATA SOURCES:
-        Default:    Top packages from hugovk.github.io (ranked by popularity)
-        --all:      All packages from pypi.org/simple (alphabetical order)
+        Default:    Top ~8k packages from hugovk.github.io (pre-ranked)
+        --all:      All ~700k packages from pypi.org/simple (sorted by download count)
+                    Note: --all fetches the full package list then sorts by popularity
     
     OUTPUT:
         - Terminal output with four categorized tables
@@ -63,7 +64,7 @@ struct MobileWheelsChecker {
         return Array(packages)
     }
     
-    static func downloadAllPackagesFromSimpleIndex() async throws -> [String] {
+    static func downloadAllPackagesFromSimpleIndex(sortedByDownloads: Bool = false) async throws -> [String] {
         print("📥 Downloading package list from PyPI Simple Index...")
         let url = URL(string: "https://pypi.org/simple/")!
         let (data, _) = try await URLSession.shared.data(from: url)
@@ -90,7 +91,47 @@ struct MobileWheelsChecker {
             }
         }
         
-        print("📦 Found \(packages.count) packages on PyPI\n")
+        print("📦 Found \(packages.count) packages on PyPI")
+        
+        // If sorting by downloads is requested, fetch download stats and reorder
+        if sortedByDownloads {
+            print("📊 Fetching download statistics for sorting...")
+            let statsUrl = URL(string: "https://hugovk.github.io/top-pypi-packages/top-pypi-packages-30-days.min.json")!
+            let (statsData, _) = try await URLSession.shared.data(from: statsUrl)
+            let response = try JSONDecoder().decode(TopPyPIResponse.self, from: statsData)
+            
+            // Create a ranking map: package name -> rank (lower is more popular)
+            var rankMap: [String: Int] = [:]
+            for (index, row) in response.rows.enumerated() {
+                rankMap[row.project.lowercased()] = index
+            }
+            
+            // Sort packages: ranked first (by download count), then unranked alphabetically
+            packages.sort { pkg1, pkg2 in
+                let rank1 = rankMap[pkg1.lowercased()]
+                let rank2 = rankMap[pkg2.lowercased()]
+                
+                switch (rank1, rank2) {
+                case let (r1?, r2?):
+                    // Both have rankings - compare ranks
+                    return r1 < r2
+                case (_?, nil):
+                    // pkg1 has rank, pkg2 doesn't - pkg1 comes first
+                    return true
+                case (nil, _?):
+                    // pkg2 has rank, pkg1 doesn't - pkg2 comes first
+                    return false
+                case (nil, nil):
+                    // Neither has rank - alphabetical
+                    return pkg1.lowercased() < pkg2.lowercased()
+                }
+            }
+            
+            print("📦 Sorted by download count (top packages first)\n")
+        } else {
+            print()
+        }
+        
         return packages
     }
     
@@ -342,8 +383,8 @@ struct MobileWheelsChecker {
             // Download packages from PyPI
             let testPackages: [String]
             if useSimpleIndex {
-                // Get all packages from simple index
-                let allPackages = try await downloadAllPackagesFromSimpleIndex()
+                // Get all packages from simple index, sorted by downloads
+                let allPackages = try await downloadAllPackagesFromSimpleIndex(sortedByDownloads: true)
                 // Limit to requested number (or all if limit >= total)
                 testPackages = limit >= allPackages.count ? allPackages : Array(allPackages.prefix(limit))
             } else {
