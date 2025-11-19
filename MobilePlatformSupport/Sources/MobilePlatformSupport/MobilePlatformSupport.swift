@@ -384,17 +384,22 @@ public class MobilePlatformSupport {
                 break
             }
             
-            print("[\(results.count + 1)/\(limit)] [\(index + 1)/\(packageNames.count)] \(packageName)")
+            // Use carriage return to update same line
+            print("\r[\(results.count + 1)/\(limit)] [\(index + 1)/\(packageNames.count)] \(packageName)", terminator: "")
+            fflush(stdout)
             
             do {
                 if let annotated = try await annotatePackage(packageName) {
                     results.append(annotated)
                 }
             } catch {
-                print(" ! Skipping \(packageName): \(error.localizedDescription)")
+                print("\r\u{001B}[K ! Skipping \(packageName): \(error.localizedDescription)")
                 continue
             }
         }
+        
+        // Print newline after loop completes
+        print()
         
         return results
     }
