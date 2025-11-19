@@ -1,6 +1,46 @@
 import Foundation
 import MobilePlatformSupport
 
+// MARK: - Usage Documentation
+func printUsage() {
+    print("""
+    🔍 Mobile Wheels Checker - Check PyPI packages for iOS/Android support
+    
+    USAGE:
+        mobile-wheels-checker [LIMIT] [OPTIONS]
+    
+    ARGUMENTS:
+        LIMIT           Number of packages to check (default: 1000)
+    
+    OPTIONS:
+        -d, --deps      Enable dependency checking (recursive)
+        -a, --all       Use PyPI Simple Index (all packages) instead of top packages
+        -h, --help      Show this help message
+    
+    EXAMPLES:
+        # Check top 100 most popular packages
+        mobile-wheels-checker 100
+        
+        # Check top 500 packages with dependency checking
+        mobile-wheels-checker 500 --deps
+        
+        # Check first 1000 packages from PyPI Simple Index
+        mobile-wheels-checker 1000 --all
+        
+        # Check all packages on PyPI (~700k packages - will take hours!)
+        mobile-wheels-checker 999999 --all
+    
+    DATA SOURCES:
+        Default:    Top packages from hugovk.github.io (ranked by popularity)
+        --all:      All packages from pypi.org/simple (alphabetical order)
+    
+    OUTPUT:
+        - Terminal output with four categorized tables
+        - Markdown report: mobile-wheels-results.md
+    
+    """)
+}
+
 struct TopPyPIPackage: Codable {
     let project: String
     let download_count: Int?
@@ -21,6 +61,37 @@ struct MobileWheelsChecker {
         let packages = response.rows.prefix(limit).map { $0.project }
         print("📥 Downloaded top \(packages.count) packages from PyPI\n")
         return Array(packages)
+    }
+    
+    static func downloadAllPackagesFromSimpleIndex() async throws -> [String] {
+        print("📥 Downloading package list from PyPI Simple Index...")
+        let url = URL(string: "https://pypi.org/simple/")!
+        let (data, _) = try await URLSession.shared.data(from: url)
+        
+        guard let html = String(data: data, encoding: .utf8) else {
+            throw NSError(domain: "MobileWheelsChecker", code: 1, 
+                         userInfo: [NSLocalizedDescriptionKey: "Failed to decode HTML"])
+        }
+        
+        // Parse package names from HTML
+        // Format: <a href="/simple/package-name/">package-name</a>
+        var packages: [String] = []
+        let pattern = #"<a href="/simple/[^/]+/">([^<]+)</a>"#
+        
+        if let regex = try? NSRegularExpression(pattern: pattern, options: []) {
+            let matches = regex.matches(in: html, options: [], 
+                                       range: NSRange(html.startIndex..., in: html))
+            
+            for match in matches {
+                if let range = Range(match.range(at: 1), in: html) {
+                    let packageName = String(html[range])
+                    packages.append(packageName)
+                }
+            }
+        }
+        
+        print("📦 Found \(packages.count) packages on PyPI\n")
+        return packages
     }
     
     static func exportMarkdown(
@@ -256,7 +327,7 @@ struct MobileWheelsChecker {
             return "⚠️ Not available"
         }
     }
-    static func main(limit: Int, checkDeps: Bool) async {
+    static func main(limit: Int, checkDeps: Bool, useSimpleIndex: Bool) async {
         print("🔍 Mobile Wheels Checker")
         print("========================\n")
         
@@ -268,10 +339,19 @@ struct MobileWheelsChecker {
             _ = try await checker.fetchPySwiftPackages()
             print()
             
-            // Download top packages from PyPI
-            let testPackages = try await downloadTopPackages(limit: limit)
+            // Download packages from PyPI
+            let testPackages: [String]
+            if useSimpleIndex {
+                // Get all packages from simple index
+                let allPackages = try await downloadAllPackagesFromSimpleIndex()
+                // Limit to requested number (or all if limit >= total)
+                testPackages = limit >= allPackages.count ? allPackages : Array(allPackages.prefix(limit))
+            } else {
+                // Get top packages from hugovk
+                testPackages = try await downloadTopPackages(limit: limit)
+            }
             
-            print("Checking \(testPackages.count) popular packages for mobile support...")
+            print("Checking \(testPackages.count) \(useSimpleIndex ? "packages" : "popular packages") for mobile support...")
             if checkDeps {
                 print("(Dependency checking enabled)")
             }
@@ -495,11 +575,19 @@ struct MobileWheelsChecker {
     }
 }
 let args = ProcessInfo.processInfo.arguments
+
+// Check for help flag
+if args.contains("-h") || args.contains("--help") {
+    printUsage()
+    exit(0)
+}
+
 let limit: Int = if args.count > 1 {
     .init(args[1]) ?? 1000
 } else {
     1000
 }
 let checkDeps: Bool = args.contains("--deps") || args.contains("-d")
+let useSimpleIndex: Bool = args.contains("--all") || args.contains("-a")
 
-await MobileWheelsChecker.main(limit: limit, checkDeps: checkDeps)
+await MobileWheelsChecker.main(limit: limit, checkDeps: checkDeps, useSimpleIndex: useSimpleIndex)

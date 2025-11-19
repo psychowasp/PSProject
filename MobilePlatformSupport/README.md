@@ -183,6 +183,77 @@ This Swift package mirrors the functionality of the Python `utils.py` from [beew
 - [Mobile Wheels Website](http://beeware.org/mobile-wheels/) - Visual dashboard of mobile package support
 - [KIVY_LIBRARY_GUIDELINES.md](../KIVY_LIBRARY_GUIDELINES.md) - Guidelines for creating mobile-compatible libraries
 
+## Command-Line Tool
+
+The package includes a command-line tool `mobile-wheels-checker` for batch checking packages.
+
+### Installation
+
+```bash
+cd MobilePlatformSupport
+swift build -c release
+```
+
+### Usage
+
+```bash
+# Check top 100 most popular packages
+swift run mobile-wheels-checker 100
+
+# Check with dependency checking
+swift run mobile-wheels-checker 500 --deps
+
+# Check packages from PyPI Simple Index (all packages, alphabetically)
+swift run mobile-wheels-checker 1000 --all
+
+# Show help
+swift run mobile-wheels-checker --help
+```
+
+### Options
+
+| Option | Description |
+|--------|-------------|
+| `[LIMIT]` | Number of packages to check (default: 1000) |
+| `-d, --deps` | Enable recursive dependency checking |
+| `-a, --all` | Use PyPI Simple Index instead of top packages |
+| `-h, --help` | Show help message |
+
+### Data Sources
+
+- **Default**: Top packages from [hugovk.github.io/top-pypi-packages](https://hugovk.github.io/top-pypi-packages/) (ranked by popularity)
+- **--all flag**: All packages from [pypi.org/simple](https://pypi.org/simple/) (alphabetical order, ~700k packages)
+
+### Output
+
+The tool generates:
+1. **Terminal output** with four categorized tables:
+   - 🔧 Official Binary Wheels (PyPI)
+   - 🔧 PySwift Binary Wheels (custom iOS/Android builds)
+   - 🐍 Pure Python Packages (first 100)
+   - ❌ Binary Packages Without Mobile Support
+
+2. **Markdown report**: `mobile-wheels-results.md` with complete listings and statistics
+
+### PyPI Simple Index Scraping
+
+The `--all` flag scrapes PyPI's Simple Index to get all available packages:
+
+```swift
+static func downloadAllPackagesFromSimpleIndex() async throws -> [String] {
+    let url = URL(string: "https://pypi.org/simple/")!
+    let (data, _) = try await URLSession.shared.data(from: url)
+    
+    // Parse HTML: <a href="/simple/package-name/">package-name</a>
+    let pattern = #"<a href="/simple/[^/]+/">([^<]+)</a>"#
+    // ... regex matching
+    
+    return packages  // ~700k packages
+}
+```
+
+This provides an alternative to the popularity-based ranking, useful for comprehensive package ecosystem analysis.
+
 ## License
 
 This package is part of the PSProject ecosystem.

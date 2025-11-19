@@ -1,7 +1,7 @@
 # Mobile Platform Support Report
 
-**Generated:** 2025-11-19 16:32:51  
-**Packages Checked:** 50  
+**Generated:** 2025-11-19 16:42:39  
+**Packages Checked:** 100  
 **Dependency Checking:** Disabled
 
 ---
@@ -22,10 +22,8 @@ Custom iOS/Android builds from [pypi.anaconda.org/pyswift/simple](https://pypi.a
 
 | Package | Android | iOS |
 |---------|---------|-----|
-| `cffi` | ⚠️ Not available | ✅ Supported |
-| `cryptography` | ⚠️ Not available | ✅ Supported |
-| `numpy` | ⚠️ Not available | ✅ Supported |
-| `pydantic-core` | ⚠️ Not available | ✅ Supported |
+
+_No packages found._
 
 
 ## 🐍 Pure Python Packages
@@ -33,49 +31,57 @@ Custom iOS/Android builds from [pypi.anaconda.org/pyswift/simple](https://pypi.a
 Packages that work on all platforms (no binary dependencies).
 | Package | Android | iOS |
 |---------|---------|-----|
-| `aiobotocore` | 🐍 Pure Python | 🐍 Pure Python |
-| `annotated-types` | 🐍 Pure Python | 🐍 Pure Python |
-| `anyio` | 🐍 Pure Python | 🐍 Pure Python |
-| `attrs` | 🐍 Pure Python | 🐍 Pure Python |
-| `boto3` | 🐍 Pure Python | 🐍 Pure Python |
-| `botocore` | 🐍 Pure Python | 🐍 Pure Python |
-| `cachetools` | 🐍 Pure Python | 🐍 Pure Python |
-| `certifi` | 🐍 Pure Python | 🐍 Pure Python |
-| `charset-normalizer` | 🐍 Pure Python | 🐍 Pure Python |
-| `click` | 🐍 Pure Python | 🐍 Pure Python |
-| `colorama` | 🐍 Pure Python | 🐍 Pure Python |
-| `filelock` | 🐍 Pure Python | 🐍 Pure Python |
-| `fsspec` | 🐍 Pure Python | 🐍 Pure Python |
-| `google-api-core` | 🐍 Pure Python | 🐍 Pure Python |
-| `grpcio-status` | 🐍 Pure Python | 🐍 Pure Python |
-| `h11` | 🐍 Pure Python | 🐍 Pure Python |
-| `idna` | 🐍 Pure Python | 🐍 Pure Python |
-| `importlib-metadata` | 🐍 Pure Python | 🐍 Pure Python |
-| `jinja2` | 🐍 Pure Python | 🐍 Pure Python |
-| `jmespath` | 🐍 Pure Python | 🐍 Pure Python |
-| `packaging` | 🐍 Pure Python | 🐍 Pure Python |
-| `pip` | 🐍 Pure Python | 🐍 Pure Python |
-| `platformdirs` | 🐍 Pure Python | 🐍 Pure Python |
-| `pluggy` | 🐍 Pure Python | 🐍 Pure Python |
-| `protobuf` | 🐍 Pure Python | 🐍 Pure Python |
-| `pyasn1` | 🐍 Pure Python | 🐍 Pure Python |
-| `pycparser` | 🐍 Pure Python | 🐍 Pure Python |
-| `pydantic` | 🐍 Pure Python | 🐍 Pure Python |
-| `pygments` | 🐍 Pure Python | 🐍 Pure Python |
-| `python-dateutil` | 🐍 Pure Python | 🐍 Pure Python |
-| `pytz` | 🐍 Pure Python | 🐍 Pure Python |
-| `requests` | 🐍 Pure Python | 🐍 Pure Python |
-| `rsa` | 🐍 Pure Python | 🐍 Pure Python |
-| `s3fs` | 🐍 Pure Python | 🐍 Pure Python |
-| `s3transfer` | 🐍 Pure Python | 🐍 Pure Python |
-| `setuptools` | 🐍 Pure Python | 🐍 Pure Python |
-| `six` | 🐍 Pure Python | 🐍 Pure Python |
-| `sniffio` | 🐍 Pure Python | 🐍 Pure Python |
-| `typing-extensions` | 🐍 Pure Python | 🐍 Pure Python |
-| `tzdata` | 🐍 Pure Python | 🐍 Pure Python |
-| `urllib3` | 🐍 Pure Python | 🐍 Pure Python |
-| `wheel` | 🐍 Pure Python | 🐍 Pure Python |
-| `zipp` | 🐍 Pure Python | 🐍 Pure Python |
+| `0` | 🐍 Pure Python | 🐍 Pure Python |
+| `0-core-client` | 🐍 Pure Python | 🐍 Pure Python |
+| `0-liuxiaojing` | 🐍 Pure Python | 🐍 Pure Python |
+| `0-orchestrator` | 🐍 Pure Python | 🐍 Pure Python |
+| `0.67.0` | 🐍 Pure Python | 🐍 Pure Python |
+| `00-merlin-hu-mcpdemo-pipy` | 🐍 Pure Python | 🐍 Pure Python |
+| `01d61084-d29e-11e9-96d1-7c5cf84ffe8e` | 🐍 Pure Python | 🐍 Pure Python |
+| `01memories` | 🐍 Pure Python | 🐍 Pure Python |
+| `01OS` | 🐍 Pure Python | 🐍 Pure Python |
+| `024travis-test024` | 🐍 Pure Python | 🐍 Pure Python |
+| `0411-test` | 🐍 Pure Python | 🐍 Pure Python |
+| `0706xiaoye` | 🐍 Pure Python | 🐍 Pure Python |
+| `0din-jef` | 🐍 Pure Python | 🐍 Pure Python |
+| `0fdb5604` | 🐍 Pure Python | 🐍 Pure Python |
+| `0fosdc` | 🐍 Pure Python | 🐍 Pure Python |
+| `0lever-so` | 🐍 Pure Python | 🐍 Pure Python |
+| `0lever-utils` | 🐍 Pure Python | 🐍 Pure Python |
+| `0x-contract-addresses` | 🐍 Pure Python | 🐍 Pure Python |
+| `0x-contract-artifacts` | 🐍 Pure Python | 🐍 Pure Python |
+| `0x-contract-wrappers` | 🐍 Pure Python | 🐍 Pure Python |
+| `0x-json-schemas` | 🐍 Pure Python | 🐍 Pure Python |
+| `0x-middlewares` | 🐍 Pure Python | 🐍 Pure Python |
+| `0x-order-utils` | 🐍 Pure Python | 🐍 Pure Python |
+| `0x-python` | 🐍 Pure Python | 🐍 Pure Python |
+| `0x-sra-client` | 🐍 Pure Python | 🐍 Pure Python |
+| `0x-web3` | 🐍 Pure Python | 🐍 Pure Python |
+| `0x01-cubic-sdk` | 🐍 Pure Python | 🐍 Pure Python |
+| `0x20bf` | 🐍 Pure Python | 🐍 Pure Python |
+| `0x2nac0nda` | 🐍 Pure Python | 🐍 Pure Python |
+| `0x6C1` | 🐍 Pure Python | 🐍 Pure Python |
+| `0xble-utils` | 🐍 Pure Python | 🐍 Pure Python |
+| `0xdirsan` | 🐍 Pure Python | 🐍 Pure Python |
+| `0xf0f-codenode` | 🐍 Pure Python | 🐍 Pure Python |
+| `0xnetx-logx` | 🐍 Pure Python | 🐍 Pure Python |
+| `100-python-projects` | 🐍 Pure Python | 🐍 Pure Python |
+| `100bot` | 🐍 Pure Python | 🐍 Pure Python |
+| `100cli` | 🐍 Pure Python | 🐍 Pure Python |
+| `101703235-missing-val` | 🐍 Pure Python | 🐍 Pure Python |
+| `101703272-missing-val` | 🐍 Pure Python | 🐍 Pure Python |
+| `101703301-Project1-TOPSIS` | 🐍 Pure Python | 🐍 Pure Python |
+| `101703301-Project2` | 🐍 Pure Python | 🐍 Pure Python |
+| `101703301-project3` | 🐍 Pure Python | 🐍 Pure Python |
+| `101703311-Missing-Data` | 🐍 Pure Python | 🐍 Pure Python |
+| `101703311-OUTLIERS` | 🐍 Pure Python | 🐍 Pure Python |
+| `101703312-outlierRemoval` | 🐍 Pure Python | 🐍 Pure Python |
+| `101703322-missing-val` | 🐍 Pure Python | 🐍 Pure Python |
+| `101703373-topsis` | 🐍 Pure Python | 🐍 Pure Python |
+| `101703375-p2` | 🐍 Pure Python | 🐍 Pure Python |
+| `101703378-project2` | 🐍 Pure Python | 🐍 Pure Python |
+| `101703383-python-package2` | 🐍 Pure Python | 🐍 Pure Python |
+| `101703549-missing-val` | 🐍 Pure Python | 🐍 Pure Python |
 
 
 ## ❌ Binary Packages Without Mobile Support
@@ -84,9 +90,7 @@ Packages with binary wheels but no iOS/Android support.
 
 | Package | Android | iOS |
 |---------|---------|-----|
-| `markupsafe` | ⚠️ Not available | ⚠️ Not available |
-| `pandas` | ⚠️ Not available | ⚠️ Not available |
-| `pyyaml` | ⚠️ Not available | ⚠️ Not available |
+| `0xibra-scann` | ⚠️ Not available | ⚠️ Not available |
 
 
 ## 📈 Summary Statistics
@@ -96,18 +100,18 @@ Packages with binary wheels but no iOS/Android support.
 | Category | Count | Percentage |
 |----------|-------|------------|
 | Official Binary Wheels (PyPI) | 0 | 0.0% |
-| PySwift Binary Wheels | 4 | 8.0% |
-| Pure Python | 43 | 86.0% |
-| Binary Without Mobile Support | 3 | 6.0% |
-| **Total** | **50** | **100%** |
+| PySwift Binary Wheels | 0 | 0.0% |
+| Pure Python | 51 | 51.0% |
+| Binary Without Mobile Support | 1 | 1.0% |
+| **Total** | **100** | **100%** |
 
 ### Platform Support (Binary Wheels)
 
 | Platform | Count | Percentage |
 |----------|-------|------------|
-| Android Support | 0 / 4 | 0.0% |
-| iOS Support | 4 / 4 | 100.0% |
-| Both Platforms | 0 / 4 | 0.0% |
+| Android Support | 0 / 0 | 0.0% |
+| iOS Support | 0 / 0 | 0.0% |
+| Both Platforms | 0 / 0 | 0.0% |
 
 ---
 
