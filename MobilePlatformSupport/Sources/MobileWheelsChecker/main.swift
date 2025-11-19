@@ -15,6 +15,7 @@ func printUsage() {
     OPTIONS:
         -d, --deps      Enable dependency checking (recursive)
         -a, --all       Use PyPI Simple Index (all ~700k packages, sorted by downloads)
+        -c, --concurrent N  Number of concurrent requests (default: 10, max: 50)
         -h, --help      Show this help message
     
     EXAMPLES:
@@ -23,6 +24,9 @@ func printUsage() {
         
         # Check top 500 packages with dependency checking
         mobile-wheels-checker 500 --deps
+        
+        # Check first 1000 packages with 20 concurrent requests
+        mobile-wheels-checker 1000 -c 20
         
         # Check first 1000 packages (sorted by downloads from full PyPI catalog)
         mobile-wheels-checker 1000 --all
@@ -34,6 +38,10 @@ func printUsage() {
         Default:    Top ~8k packages from hugovk.github.io (pre-ranked)
         --all:      All ~700k packages from pypi.org/simple (sorted by download count)
                     Note: --all fetches the full package list then sorts by popularity
+    
+    PERFORMANCE:
+        Concurrent requests significantly speed up checking (default: 10 concurrent)
+        Increase with -c flag for faster results (but respect PyPI rate limits)
     
     OUTPUT:
         - Terminal output with four categorized tables
@@ -368,7 +376,7 @@ struct MobileWheelsChecker {
             return "⚠️ Not available"
         }
     }
-    static func main(limit: Int, checkDeps: Bool, useSimpleIndex: Bool) async {
+    static func main(limit: Int, checkDeps: Bool, useSimpleIndex: Bool, concurrency: Int) async {
         print("🔍 Mobile Wheels Checker")
         print("========================\n")
         
@@ -393,12 +401,15 @@ struct MobileWheelsChecker {
             }
             
             print("Checking \(testPackages.count) \(useSimpleIndex ? "packages" : "popular packages") for mobile support...")
+            if concurrency > 1 {
+                print("(Using \(concurrency) concurrent requests)")
+            }
             if checkDeps {
                 print("(Dependency checking enabled)")
             }
             print("(Note: Only packages with binary wheels will be shown)\n")
             
-            let results = try await checker.getBinaryPackages(from: testPackages)
+            let results = try await checker.getBinaryPackages(from: testPackages, concurrency: concurrency)
             
             // If dependency checking is enabled, check each package's dependencies
             var allPackagesWithDeps: [(PackageInfo, [PackageInfo], Bool)] = []  // (package, deps, allDepsSupported)
@@ -631,4 +642,12 @@ let limit: Int = if args.count > 1 {
 let checkDeps: Bool = args.contains("--deps") || args.contains("-d")
 let useSimpleIndex: Bool = args.contains("--all") || args.contains("-a")
 
-await MobileWheelsChecker.main(limit: limit, checkDeps: checkDeps, useSimpleIndex: useSimpleIndex)
+// Parse concurrency flag
+var concurrency: Int = 10  // default
+if let cIndex = args.firstIndex(where: { $0 == "-c" || $0 == "--concurrent" }), 
+   cIndex + 1 < args.count,
+   let value = Int(args[cIndex + 1]) {
+    concurrency = min(max(value, 1), 50)  // Clamp between 1 and 50
+}
+
+await MobileWheelsChecker.main(limit: limit, checkDeps: checkDeps, useSimpleIndex: useSimpleIndex, concurrency: concurrency)

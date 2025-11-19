@@ -374,8 +374,65 @@ public class MobilePlatformSupport {
     /// - Parameters:
     ///   - packageNames: Array of package names to check
     ///   - maxResults: Maximum number of results to return (nil for all)
+    ///   - concurrency: Number of concurrent requests (default: 10)
     /// - Returns: Array of PackageInfo with platform support details
-    public func getBinaryPackages(from packageNames: [String], maxResults: Int? = nil) async throws -> [PackageInfo] {
+    public func getBinaryPackages(from packageNames: [String], maxResults: Int? = nil, concurrency: Int = 10) async throws -> [PackageInfo] {
+        let limit = maxResults ?? packageNames.count
+        let packagesToCheck = Array(packageNames.prefix(limit))
+        
+        return try await withThrowingTaskGroup(of: (Int, PackageInfo?).self) { group in
+            var results: [Int: PackageInfo] = [:]
+            var processedCount = 0
+            
+            // Process packages in batches
+            for (index, packageName) in packagesToCheck.enumerated() {
+                // Wait if we've hit the concurrency limit
+                if index >= concurrency {
+                    if let (idx, package) = try await group.next() {
+                        processedCount += 1
+                        if let package = package {
+                            results[idx] = package
+                        }
+                        print("\r\u{001B}[K[\(results.count)/\(limit)] [\(processedCount)/\(packagesToCheck.count)] processing...", terminator: "")
+                        fflush(stdout)
+                    }
+                }
+                
+                // Add new task
+                group.addTask {
+                    do {
+                        let package = try await self.annotatePackage(packageName)
+                        return (index, package)
+                    } catch {
+                        return (index, nil)
+                    }
+                }
+            }
+            
+            // Collect remaining results
+            for try await (idx, package) in group {
+                processedCount += 1
+                if let package = package {
+                    results[idx] = package
+                }
+                print("\r\u{001B}[K[\(results.count)/\(limit)] [\(processedCount)/\(packagesToCheck.count)] processing...", terminator: "")
+                fflush(stdout)
+            }
+            
+            print()  // Final newline
+            
+            // Return results in original order
+            return packagesToCheck.indices.compactMap { results[$0] }
+        }
+    }
+    
+    /// Get all binary packages from a list of package names (sequential version)
+    /// Cross-checks with PySwift index to mark packages available there
+    /// - Parameters:
+    ///   - packageNames: Array of package names to check
+    ///   - maxResults: Maximum number of results to return (nil for all)
+    /// - Returns: Array of PackageInfo with platform support details
+    public func getBinaryPackagesSequential(from packageNames: [String], maxResults: Int? = nil) async throws -> [PackageInfo] {
         var results: [PackageInfo] = []
         let limit = maxResults ?? packageNames.count
         
