@@ -70,6 +70,14 @@ let targets: [Target] = [
         swiftSettings: [
             .swiftLanguageMode(.v5)
         ]
+    ),
+    .testTarget(
+        name: "PSProjectTests",
+        dependencies: [
+            "XcodeProjectBuilder",
+            "PSTools",
+            "PyProjectToml"
+        ]
     )
 ]
 

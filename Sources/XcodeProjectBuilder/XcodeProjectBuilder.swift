@@ -198,7 +198,7 @@ extension XcodeProjectBuilder {
             let app_dir = project.basePath + "app"
             let app_src = pyproject.app_src(root: .current)
             let fn = "__main__.py"
-            try? (app_src + fn).copy(app_dir + fn )
+            try! (app_src + fn).copy(app_dir + fn )
         }
     }
     
