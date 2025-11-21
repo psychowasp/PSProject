@@ -1,5 +1,5 @@
 {
-  "originHash" : "393abe0ea80a0e02da966d6e06b9df14ddf2d62f3998121882f5abe13ab31cd6",
+  "originHash" : "4a320a7b7e3c4599c3746bd6b908591e5547bff499975925c2a9635e05b6d922",
   "pins" : [
     {
       "identity" : "aexml",
@@ -142,7 +142,7 @@
       "location" : "https://github.com/Py-Swift/WheelBuilder",
       "state" : {
         "branch" : "master",
-        "revision" : "36615e1e750c2046839bb5235476b7285d5f8d6a"
+        "revision" : "cbdf0ce6f9343e1639a452141f2b29b9abddec1b"
       }
     },
     {

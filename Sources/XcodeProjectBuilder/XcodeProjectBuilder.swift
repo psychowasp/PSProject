@@ -180,6 +180,7 @@ extension XcodeProjectBuilder {
         for target in project.platforms {
             //let targ_path = target.targetPath(workingDir)
             let resourcesPath = workingDir + "Resources"
+            if !resourcesPath.exists { try resourcesPath.mkdir() }
                 switch target {
                     case .iOS:
                         try? (appFiles + "Launch Screen.storyboard").copy(resourcesPath + "Launch Screen.storyboard")
